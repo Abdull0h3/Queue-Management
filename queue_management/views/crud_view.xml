@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="action_crud" model="ir.actions.client">
+        <field name="name">CRUD</field>
+        <field name="tag">crud_widget_action</field>
+    </record>
+
+    
+    <menuitem id="menu_crud"
+            name="CRUD"
+            parent="menu_queue_management_root"
+            action="action_crud"
+            sequence="60"/>
+
+
+</odoo>

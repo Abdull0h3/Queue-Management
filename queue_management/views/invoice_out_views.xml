@@ -1,0 +1,108 @@
+<odoo>
+	<!-- Tree View -->
+	<record id="view_invoice_out_tree" model="ir.ui.view">
+		<field name="name">invoice.out.tree</field>
+		<field name="model">invoice.out</field>
+		<field name="arch" type="xml">
+			<tree 
+			decoration-info="due_date > context_today() and state != 'posted'"
+			decoration-danger="due_date &lt;= context_today() or state == 'cancelled'"
+			decoration-success="state == 'posted'"
+			string="Invoice Out"
+			default_order="invoice_date desc"
+			>
+						<!-- Button removed: not allowed in tree view -->
+
+				<field name="name"/>
+
+				<field name="partner_id" options="{'no_create_edit': True}"/>
+
+				<field name="invoice_date" optional="show"/>
+				
+				<field name="due_date" optional="show"/>
+
+                <field name="amount_total" sum= "Total Amount" />
+
+                <field name="currency_id" invisible="1"/>
+
+                <field name="service_type_id"/>
+
+				<field name="counter_id"/>
+
+				<field name="state"/>
+
+
+			</tree>
+		</field>
+	</record>
+
+	<!-- Form View -->
+	<record id="view_invoice_out_form" model="ir.ui.view">
+		<field name="name">invoice.out.form</field>
+		<field name="model">invoice.out</field>
+		<field name="arch" type="xml">
+			<form string="Invoice Out">
+				<header>
+					<field name="state" widget="statusbar" statusbar_visible="draft,posted,cancelled"/>
+					<button name="%(queue_management.invoice_out)d" string="Print" type="action" class="btn-primary" attrs="{'invisible': [('state', '!=', 'posted')]}"/>
+				</header>
+				<sheet>
+					<group>
+						<field name="name"/>
+						<field name="partner_id" options="{'no_create_edit': True}"/>
+						<field name="invoice_date"/>
+						<field name="service_type_id"/>
+						<field name="amount_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+						<field name="counter_id" readonly="1"/>
+						<field name="state" />
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<!-- Search View -->
+	<record id="view_invoice_out_search" model="ir.ui.view">
+		<field name="name">invoice.out.search</field>
+		<field name="model">invoice.out</field>
+		<field name="arch" type="xml">
+			<search>
+				<field name="name"/>
+				<field name="partner_id"/>
+				<filter string="Draft" name="draft" domain="[('state','=','draft')]"/>
+				<filter string="Posted" name="posted" domain="[('state','=','posted')]"/>
+				
+			</search>
+		</field>
+	</record>
+
+	<record id="invoice_out_view_calendar" model="ir.ui.view">
+		<field name="name">invoice.out.view.calendar</field>
+		<field name="model">invoice.out</field>
+		<field name="arch" type="xml">
+			<calendar string="Invoice Calendar" date_start="invoice_date">
+				<field name="name"/>
+				<field name="partner_id"/>
+				<field name="amount_total"/>
+				<field name="service_type_id"/>
+				<field name="state"/>
+			</calendar>
+		</field>
+	</record>
+
+	<!-- Action -->
+	<record id="action_invoice_out" model="ir.actions.act_window">
+		<field name="name">Invoice Out</field>
+		<field name="res_model">invoice.out</field>
+		<field name="view_mode">tree,form,calendar</field>
+		<field name="search_view_id" ref="view_invoice_out_search"/>
+		<field name="context">{'search_default_posted': 1}</field>
+	</record>
+
+	<!-- Menu -->
+	<menuitem id="menu_invoice_out"
+			  name="Invoice Out"
+			  parent="menu_queue_management_root"
+			  action="action_invoice_out"
+			  sequence="60"/>
+</odoo>

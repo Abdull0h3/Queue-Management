@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_invoice_out">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-block="main_content">
+                    <div class="page">
+                        <h2>Invoice Report</h2>
+                        <t t-if="docs">
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <strong>Report Period:</strong> <span t-esc="context.get('start_date', 'N/A')"/> to <span t-esc="context.get('end_date', 'N/A')"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Total Invoices:</strong> <span t-esc="len(docs)"/>
+                                </div>
+                            </div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Number</th>
+                                        <th>Customer</th>
+                                        <th>Invoice Date</th>
+                                        <th>Due Date</th>
+                                        <th>Total</th>
+                                        <th>Service</th>
+                                        <th>Counter</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="docs" t-as="invoice">
+                                        <td><span t-field="invoice.name"/></td>
+                                        <td><span t-field="invoice.partner_id.name"/></td>
+                                        <td><span t-field="invoice.invoice_date"/></td>
+                                        <td><span t-field="invoice.due_date" t-options="{'widget': 'date'}"/></td>
+                                        <td><span t-esc="invoice.amount_total"/></td>
+                                        <td><span t-field="invoice.service_type_id.name"/></td>
+                                        <td><span t-field="invoice.counter_id.counter_name"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row mt-3">
+                                <div class="col-12 text-right">
+                                    <strong>Total Amount: <span t-esc="sum(invoice.amount_total for invoice in docs)"/></strong>
+                                </div>
+                            </div>
+                        </t>
+                        <t t-if="not docs">
+                            <p>No invoices found for the selected date range.</p>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="invoice_out" model="ir.actions.report">
+        <field name="name">Invoice Out</field>
+        <field name="model">invoice.out</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">queue_management.report_invoice_out</field>
+        <field name="report_file">queue_management.report_invoice_out</field>
+        <field name="binding_model_id" ref="model_invoice_out"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <t t-name="queue_management.QueueDashboardTemplate" owl="1">
+        <div class="vh-100 overflow-auto bg-muted">
+            <div class="row m-3">
+                <div class="col-lg-7">
+                    <div class="row">
+                        <div class="col m-0 p-0">
+                            <div class="shadow-border m-2 p-4 bg-white">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h1 class="text-primary fw-bold">Queue Dashboard</h1>
+                                    <div>
+                                        <select class="from-select" t-model="state.period" t-on-change="onChangePeriod">
+                                            <option value="0"> Select Period</option>
+                                            <option value="7">Last 7 Days</option>
+                                            <option value="30">Last 30 Days</option>
+                                            <option value="90">Last 90 Days</option>
+                                            <option value="365">Last 365 Days</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <KPICard on-click.bind="view_Cancelled_Tickets" name="'cancelled Tickets'" value="state.cancelled_tickets.value" percentage="state.cancelled_tickets.percentage"/>
+                        <KPICard on-click.bind="view_Completed_Tickets" name="'completed Tickets'" value="state.getCompletedTickets.value" percentage="state.getCompletedTickets.percentage"/>
+                        <KPICard on-click.bind="view_Revenue" name="'Revenues'" value="state.revenues.total_revenue" percentage="state.revenues.revenues_percentage"/>
+                        <KPICard on-click.bind="view_Revenue" name="'Average'" value="state.revenues.average" percentage="state.revenues.average_percentage"/>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 m-0 p-0">
+                            <div class="shadow-border m-2 p-4 bg-white">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h3 class="text-primary fw-bold">Top Services</h3>
+                                    <div class="px-3 py-1 bg-primary cursor-pointer">
+                                        <span class="fa fa-arrow-right text-white"/>
+                                    </div>
+                                </div>
+                                <ChartRenderer type= "'doughnut'" title="'Top Services Report'" config="state.getTopServices" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 m-0 p-0">
+                            <div class="shadow-border m-2 p-4 bg-white">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h3 class="text-primary fw-bold">Top Sales People</h3>
+                                    <div class="px-3 py-1 bg-primary cursor-pointer">
+                                        <span class="fa fa-arrow-right text-white"/>
+                                    </div>
+                                </div>
+                                <ChartRenderer type= "'pie'" title="'Top Sales People Report'" config="state.getTopSalesPeople" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="row">
+                        <div class="col m-0 p-0">
+                            <div class="shadow-border m-2 p-4 bg-white">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h3 class="text-primary fw-bold">Monthly Sales</h3>
+                                    <div class="px-3 py-1 bg-primary cursor-pointer">
+                                        <span class="fa fa-arrow-right text-white"/>
+                                    </div>
+                                </div>
+                                <ChartRenderer type= "'bar'" title="'Monthly Sales Report'" config="state.getMonthlySales" />
+                            </div>
+                        </div>
+                    </div>
+                      <div class="row">
+                        <div class="col m-0 p-0"> 
+                            <div class="shadow-border m-2 p-4 bg-white">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h3 class="text-primary fw-bold">Partner Orders</h3>
+                                    <div class="px-3 py-1 bg-primary cursor-pointer">
+                                        <span class="fa fa-arrow-right text-white"/>
+                                    </div>
+                                </div>
+                                <ChartRenderer type= "'bar'" title="'Partner Orders Report'" config="state.getPartnerOrders" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</odoo>

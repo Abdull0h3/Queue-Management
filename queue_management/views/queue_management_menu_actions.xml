@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Root Menu for Queue Management -->
+        <menuitem
+            id="menu_queue_management_root"
+            name="Queue Management"
+            action="action_queue_management_dashboard"
+            sequence="10"/>
+
+        
+
+        <!-- Ticket Menu -->
+        <menuitem id="menu_queue_ticket"
+                  name="Tickets"
+                  parent="menu_queue_management_root"
+                  action="action_queue_ticket"
+                  sequence="20"/>
+
+
+        <record id="action_service" model="ir.actions.act_window">
+            <field name="name">Services</field>
+            <field name="res_model">queue.service</field>
+            <field name="view_mode">tree,form,graph</field>
+        </record>
+        <menuitem
+            id="service_menu"
+            name="Services"
+            action="action_service"
+            parent="menu_queue_management_root"
+            sequence="30"/>
+
+        <record id="action_invoice_report_wizard" model="ir.actions.act_window">
+            <field name="name">Invoice Report Wizard</field>
+            <field name="res_model">invoice.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+            id="menu_invoice_report_wizard"
+            name="Print Invoice Report"
+            action="action_invoice_report_wizard"
+            parent="menu_queue_management_root"
+            sequence="40"/>
+
+    </data>
+</odoo>

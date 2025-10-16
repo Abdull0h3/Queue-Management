@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_queue_ticket" model="ir.actions.act_window">
+            <field name="name">Tickets</field>
+            <field name="res_model">queue.ticket</field>
+            <field name="view_mode">tree,form,kanban,graph</field>
+        </record>
+        
+        <!-- Ticket Views -->
+        <record id="view_queue_ticket_tree" model="ir.ui.view">
+            <field name="name">queue.ticket.tree</field>
+            <field name="model">queue.ticket</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="status"/>
+                    <field name="partner_id"/>
+                    <field name="assigned_counter_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_queue_ticket_search" model="ir.ui.view">
+            <field name="name">queue.ticket.search</field>
+            <field name="model">queue.ticket</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="status"/>
+                    <field name="partner_id"/>
+                    <field name="assigned_counter_id"/>
+                    <filter name="status_waiting" string="Waiting List"
+                            domain="[('status', '=', 'waiting')]"/>
+                    <filter name="status_completed" string="Completed List"
+                            domain="[('status', '=', 'completed')]"/>
+                    <filter name="status_cancelled" string="Cancelled List"
+                            domain="[('status', '=', 'cancelled')]"/>
+
+                    <searchpanel>
+                        <field name="service_type_id" string="Service Type" select="multi"/>
+                        <field name="status" string="Status" enable_counters="1"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="view_queue_ticket_form" model="ir.ui.view">
+            <field name="name">queue.ticket.form</field>
+            <field name="model">queue.ticket</field>
+            <field name="arch" type="xml">
+                <form string="Kiosk Ticket">
+                    <header>
+                        <button name="action_cancel" type="object" string="CANCEL" attrs="{'invisible': [('status', '!=', 'waiting')]}"/>
+                        <field name="status" widget="statusbar" readonly="1"
+                        statusbar_visible="new, waiting, cancelled, in_progress, completed, skipped, delayed"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_ribbon oe_ribbon-success" attrs="{'invisible': [('status','!=','completed')]}">
+                            Completed
+                            </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Ticket Number"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group class="oe_centered_group">
+                            <group>
+                                <field name="partner_id"></field>
+                                <field name="phone"></field>
+                                <field name="email"></field>
+                                <field name="create_date"></field>
+                                <field name="on_date"></field>
+                            </group>
+                            <group>
+                                <field name="service_type_id"/>
+                                <field name="serv_price" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="queue_ticket_view_kanban" model="ir.ui.view">
+            <field name="name">queue.ticket.view.kanban</field>
+            <field name="model">queue.ticket</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="service_type_id" group_by_no_fields="1">
+                    <!--<field name="service_type_id"/>-->
+                    <progressbar field="service_type_id" sum_field="serv_price"
+                    colors= '{"":"","":"","":"","":""}' />
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <strong><field name="name"/></strong><br/>
+                                Price: <field name="serv_price"/><br/>
+                                Status: <field name="status"/><br/>
+                                Partner: <field name="partner_id"/><br/>
+                                Counter: <field name="assigned_counter_id"/>
+                            </div>
+                        </t>
+                    </templates>    
+                </kanban>
+            </field>
+        </record>
+
+        <record id="queue_ticket_view_graph" model="ir.ui.view">
+            <field name="name">queue.ticket.view.graph</field>
+            <field name="model">queue.ticket</field>
+            <field name="arch" type="xml">
+                <graph string="Tickets by Status" type="bar">
+                    <field name="status" groupby="status" />
+
+                </graph>
+            </field>
+        </record>
+
+    </data>
+
+</odoo>

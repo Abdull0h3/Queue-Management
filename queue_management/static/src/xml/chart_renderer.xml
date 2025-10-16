@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <t t-name="queue_management.ChartRenderer" owl="1">
+        <canvas t-ref="chart"/>
+    </t>
+</odoo>

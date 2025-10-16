@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_kiosk_form" model="ir.ui.view">
+        <field name="name">kiosk.form</field>
+        <field name="model">queue.ticket</field>
+        <field name="arch" type="xml">
+            <form string="Kiosk Ticket">
+                <header>
+                    
+                    <button name="action_cancel" type="object" string="CANCEL" attrs="{'invisible': [('status', '!=', 'waiting')]}"/>
+                    <field name="status" widget="statusbar" readonly="1"
+                       statusbar_visible="new, waiting, cancelled, in_progress, completed, skipped, delayed"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon"
+                    title="Completed"
+                    bg_color="bg-success"
+                    attrs="{'invisible': [('status','!=','completed')]}"/>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" string="Ticket Number"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group class="oe_centered_group">
+                        <group>
+                            <field name="partner_id"></field>
+                            <field name="phone"></field>
+                            <field name="email"></field>
+                            <field name="create_date"></field>
+                            <field name="on_date"></field>
+                        </group>
+                        <group>
+                            <field name="service_type_id"/>
+                            <field name="serv_price" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+                   <!-- Action to open kiosk in current page -->
+      <record id="action_queue_kiosk" model="ir.actions.act_window">
+          <field name="name">Queue Kiosk</field>
+          <field name="res_model">queue.ticket</field>
+          <field name="view_mode">form</field>
+          <field name="view_id" ref="view_kiosk_form"/>
+          <field name="target">current</field>
+          <field name="context">{'default_name': 'New'}</field>
+      </record>
+
+    <!-- Menu item for kiosk -->
+    <menuitem id="menu_queue_kiosk"
+            name="Queue Kiosk"
+            parent="menu_queue_management_root"
+            action="action_queue_kiosk"
+            sequence="40"/>
+
+
+</odoo>

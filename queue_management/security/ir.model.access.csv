@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_queue_ticket_user,queue.ticket.user,model_queue_ticket,base.group_user,1,1,1,1
+access_queue_counter_user,queue.counter.user,model_queue_counter,base.group_user,1,1,1,1
+access_queue_dashboard_user,queue.dashboard.user,model_queue_dashboard,base.group_user,1,1,1,1
+access_queue_service_user,queue.service.user,model_queue_service,base.group_user,1,1,1,1
+access_invoice_out_user,invoice.out.user,model_invoice_out,base.group_user,1,1,1,1
+access_invoice_report_wizard_user,access_invoice_report_wizard_user,model_invoice_report_wizard,,1,1,1,0

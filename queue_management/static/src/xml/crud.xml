@@ -1,0 +1,136 @@
+<templates>
+    <t t-name="crud_widget_template" owl="1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+
+        <div class="crud-widget">
+            <h2>CRUD Widget</h2>
+
+            <!-- + Create Ticket button -->
+            <button class="create-btn" t-on-click="() => this.openForm()">+ Create Ticket</button>
+
+            <!-- Modal popup (shared for Create & Edit) -->
+            <t t-if="state.showForm">
+                <div class="modal-overlay" t-on-click="toggleForm"></div>
+                <div class="modal-card creative-card" style="max-width:800px;width:95vw;margin:auto;background:#fff;border-radius:24px;box-shadow:0 8px 32px rgba(44,62,80,0.18);padding:0;overflow:hidden;">
+                    <div style="background:#6c63ff;color:#fff;padding:32px 32px 20px 32px;position:relative;border-top-left-radius:24px;border-top-right-radius:24px;">
+                        <span style="font-size:2rem;font-weight:700;letter-spacing:2px;">Ticket <t t-esc="state.editingId ? state.editingId : 'New'"/></span>
+                        <button class="close-btn" t-on-click="toggleForm" style="position:absolute;top:18px;right:18px;font-size:1.5rem;background:none;border:none;color:#fff;cursor:pointer;">×</button>
+                        <t t-set="_status" t-value="state.editingId ? (filteredTickets.find(t => t.id == state.editingId)?.status || '') : ''"/>
+                            <span t-att-style="
+                                'position:absolute;top:18px;right:54px;' +
+                                'color:#fff;padding:4px 20px;border-radius:8px;font-size:0.9rem;display:inline-block;' +
+                                (_status === 'cancelled' ? 'background:#e74c3c;' :
+                                 _status === 'waiting' ? 'background:#3498db;' :
+                                 _status === 'skipped' ? 'background:#f1c40f;color:#222;' :
+                                 _status === 'delay' ? 'background:#fd7e14;' :
+                                 _status === 'completed' ? 'background:#28a745;' :
+                                 'background:#6c63ff;')
+                            ">
+                                <t t-esc="_status"/>
+                            </span>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;padding:32px;gap:40px;">
+                        <div style="flex:1 1 260px;min-width:260px;">
+                            <h4 style="margin-bottom:12px;color:#6c63ff;font-weight:600;">Customer Info</h4>
+                            
+                            <label style="font-weight:500;">Customer</label>
+                            <select t-model="state.partner_id"
+                                    style="width:100%;margin-bottom:16px;padding:12px 16px;font-size:1.1rem;
+                                        border-radius:10px;border:1px solid #d1d5db;">
+                                <option value="">-- Select Customer --</option>
+                                <t t-foreach="state.partners" t-as="partner" t-key="partner.id">
+                                    <option t-att-value="partner.id">
+                                        <t t-esc="partner.name"/>
+                                    </option>
+                                </t>
+                            </select>
+
+                            <label style="font-weight:500;">Phone</label>
+                            <input t-att-value="state.partner_id ? state.partners.find(p => p.id == state.partner_id)?.phone : ''"
+                                readonly="1"
+                                style="width:100%;margin-bottom:16px;padding:12px 16px;font-size:1.1rem;
+                                        border-radius:10px;border:1px solid #d1d5db;background:#f8f9fa;"/>
+
+                            <label style="font-weight:500;">Email</label>
+                            <input t-att-value="state.partner_id ? state.partners.find(p => p.id == state.partner_id)?.email : ''"
+                                readonly="1"
+                                style="width:100%;margin-bottom:16px;padding:12px 16px;font-size:1.1rem;
+                                        border-radius:10px;border:1px solid #d1d5db;background:#f8f9fa;"/>
+                        </div>
+
+                        <div style="flex:1 1 260px;min-width:260px;">
+                            <h4 style="margin-bottom:12px;color:#6c63ff;font-weight:600;">Service Info</h4>
+                            <label style="font-weight:500;">Service</label>
+                            <select t-model="state.service_type_id" style="width:100%;margin-bottom:16px;padding:12px 16px;font-size:1.1rem;border-radius:10px;border:1px solid #d1d5db;">
+                                <option value="">-- Select Service --</option>
+                                <t t-foreach="state.services" t-as="service" t-key="service.id">
+                                    <option t-att-value="service.id">
+                                        <t t-esc="service.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                            <label style="font-weight:500;">Service Price</label>
+                            <input t-att-value="state.service_type_id ? state.services.find(s => s.id == state.service_type_id)?.price : 0" readonly="1" style="width:100%;margin-bottom:16px;padding:12px 16px;font-size:1.1rem;border-radius:10px;border:1px solid #d1d5db;background:#f8f9fa;"/>
+                            <label style="font-weight:500;">On Date</label>
+                            <input type="datetime-local" t-model="state.on_date" style="width:100%;margin-bottom:16px;padding:12px 16px;font-size:1.1rem;border-radius:10px;border:1px solid #d1d5db;"/>
+                        </div>
+                    </div>
+                    <div style="padding:0 32px 32px 32px;text-align:right;">
+                        <button class="create-btn" 
+                                t-on-click="state.editingId ? editRecord : createRecord"
+                                style="background:linear-gradient(90deg,#6c63ff 60%,#4e54c8 100%);color:#fff;padding:14px 36px;border:none;border-radius:12px;font-size:1.15rem;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(44,62,80,0.10);transition:background 0.2s,box-shadow 0.2s;margin-left:12px;">
+                            <t t-esc="state.editingId ? 'Update Ticket' : 'Create Ticket'"/>
+                        </button>
+                    </div>
+                </div>
+            </t>
+
+            <!-- Search -->
+            <div class="search-container">
+                <input t-model="state.searchTerm" type="text" placeholder="Search tickets..." />
+                <button t-on-click="() => { state.searchTerm = ''; this.search(); }">×</button>
+            </div>
+
+            <!-- Table -->
+            <div class="table-container">
+                <table class="ticket-table">
+                    <thead>
+                        <tr>
+                            <th>Ticket Name</th>
+                            <th>Status</th>
+                            <th>Customer</th>
+                            <th>Service</th>
+                            <th>Date</th>
+                            <th style="text-align:center;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="filteredTickets" t-as="ticket" t-key="ticket.id">
+                            <tr t-on-click="() => this.openForm(ticket)" style="cursor:pointer;">
+                                <td><t t-esc="ticket.name"/></td>
+                                <td><t t-esc="ticket.status"/></td>
+                                <td><t t-esc="ticket.partner_name"/></td>
+                                <td><t t-esc="ticket.service_type_name"/></td>
+                                    <td><t t-esc="this._formatForDateDisplay(ticket.on_date)"/></td>
+                                <td class="action-cell">
+                                    <button class="icon-btn edit-btn" 
+                                        t-on-click="(ev) => {ev.stopPropagation(); this.openForm(ticket);}">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="icon-btn delete-btn" 
+                                            t-on-click="(ev) => {ev.stopPropagation(); this.deleteRecord(ticket);}">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                    <button class="icon-btn cancel-btn" 
+                                            t-on-click="(ev) => {ev.stopPropagation(); this.cancelRecord(ticket);}">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </t>
+</templates>
