@@ -13,7 +13,6 @@ A comprehensive Queue Management System for Odoo that helps businesses manage cu
 - [Usage](#usage)
 - [Models](#models)
 - [API Endpoints](#api-endpoints)
-- [Screenshots](#screenshots)
 - [Technical Details](#technical-details)
 - [Contributing](#contributing)
 - [License](#license)
