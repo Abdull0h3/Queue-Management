@@ -1,4 +1,3 @@
-# __manifest__.py
 
 {
     "name": "Queue Management",
