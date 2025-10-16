@@ -475,44 +475,9 @@ This module is licensed under the LGPL-3 License. See the LICENSE file for detai
 
 **Your Name**
 
-- GitHub: [@yourusername](https://github.com/yourusername)
+- GitHub: [@Abdull0h3](https://github.com/Abdull0h3)
 
 ## 🙏 Acknowledgments
 
 - Odoo Community for the excellent framework
 - Contributors and testers
-
-## 📞 Support
-
-For support, please:
-- Open an issue on GitHub
-- Contact the maintainer
-- Check Odoo documentation for framework-specific questions
-
-## 🗺️ Roadmap
-
-Future enhancements planned:
-
-- [ ] SMS/Email notifications when ticket is called
-- [ ] Priority queue support
-- [ ] Appointment scheduling
-- [ ] Multi-language support for kiosk
-- [ ] Mobile app integration
-- [ ] Advanced analytics and reporting
-- [ ] Ticket transfer between counters
-- [ ] VIP customer handling
-- [ ] Service time tracking and SLA monitoring
-- [ ] Queue display board for customers
-
-## 📊 Statistics
-
-- **Lines of Code**: ~1,500
-- **Models**: 5
-- **Views**: 10
-- **API Endpoints**: 7
-- **JavaScript Widgets**: 4
-
----
-
-**Made with ❤️ for the Odoo Community**
-
