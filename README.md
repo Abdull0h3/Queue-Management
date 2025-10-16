@@ -464,7 +464,7 @@ This module is licensed under the LGPL-3 License. See the LICENSE file for detai
 
 ## 👤 Author
 
-**Your Name**
+**Abdullah Bahbry**
 
 - GitHub: [@Abdull0h3](https://github.com/Abdull0h3)
 
