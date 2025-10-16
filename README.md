@@ -341,15 +341,6 @@ Body: {
 }
 ```
 
-## 📸 Screenshots
-
-*Screenshots will be added here showcasing:*
-- Ticket creation form
-- Counter management view
-- Dashboard with analytics
-- Kiosk interface
-- Invoice report
-
 ## 🔧 Technical Details
 
 ### Module Structure
