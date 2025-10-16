@@ -81,7 +81,7 @@ A comprehensive Queue Management System for Odoo that helps businesses manage cu
 
 ### Prerequisites
 
-- Odoo 17.0 or higher
+- Odoo 16
 - Python 3.8+
 - Required Odoo modules:
   - `base`
