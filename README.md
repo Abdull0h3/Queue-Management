@@ -1,7 +1,7 @@
 # Queue Management System for Odoo
 
 ![License: LGPL-3](https://img.shields.io/badge/license-LGPL--3-blue.svg)
-![Odoo Version](https://img.shields.io/badge/Odoo-17.0-purple.svg)
+![Odoo Version](https://img.shields.io/badge/Odoo-16.0-purple.svg)
 
 A comprehensive Queue Management System for Odoo that helps businesses manage customer queues efficiently with multiple service counters, automatic ticket generation, and real-time tracking.
 
